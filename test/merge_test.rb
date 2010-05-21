@@ -40,4 +40,25 @@ class MergeTest < Test::Unit::TestCase
     assert_equal expected, SmartHashMerge.merge(lhs, rhs)
   end
 
+  context "readme examples" do
+    readme = File.read(File.expand_path("../README.md", "__FILE__"))
+    lines = readme.grep(/^    /)
+    tests = [""]
+    expected = []
+    lines.each do |line|
+      if line =~ /^    # =>(.*)/
+        expected << $1
+        tests << ""
+      else
+        tests.last << line
+      end
+    end
+
+    tests[0..-2].zip(expected).each do |code, expectation|
+      should "generate #{expectation}" do
+        assert_equal eval(expectation), eval(code)
+      end
+    end
+  end
+
 end
