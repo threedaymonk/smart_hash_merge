@@ -61,4 +61,12 @@ class MergeTest < Test::Unit::TestCase
     end
   end
 
+  should "not change hash" do
+    lhs = { "foo" => {} }
+    rhs = { "foo" => { "bar" => ["baz"] } }
+    expected = { "foo" => {} }
+    SmartHashMerge.merge(lhs, rhs)
+    assert_equal expected, lhs
+  end
+
 end
