@@ -1,31 +1,31 @@
 class SmartHashMerge
-  def self.merge(lhs, rhs)
-    new(lhs, rhs).merge
+  def self.merge(lhash, rhash)
+    new(lhash, rhash).merge
   end
 
-  def initialize(lhs, rhs)
-    @lhs, @rhs = lhs, rhs
+  def initialize(lhash, rhash)
+    @lhash, @rhash = lhash, rhash
   end
 
   def merge
-    lhs = @lhs.dup
-    deep_merge(lhs, @rhs)
+    lhash = @lhash.dup
+    deep_merge(lhash, @rhash)
   end
 
 private
-  def deep_merge(lhs, rhs)
-    rhs.each do |key, rvalue|
-      lvalue = lhs[key]
+  def deep_merge(lhash, rhash)
+    rhash.each do |key, rvalue|
+      lvalue = lhash[key]
       if lvalue.is_a?(Hash) and rvalue.is_a?(Hash)
         deep_merge(lvalue, rvalue)
       elsif lvalue.is_a?(Array) and rvalue.is_a?(Array)
-        lhs[key] = lvalue + rvalue
+        lhash[key] = lvalue + rvalue
       elsif rvalue.is_a?(Array)
-        lhs[key] = [lvalue] + rvalue
+        lhash[key] = [lvalue] + rvalue
       else
-        lhs[key] = rvalue
+        lhash[key] = rvalue
       end
     end
-    lhs
+    lhash
   end
 end
