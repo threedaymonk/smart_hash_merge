@@ -40,6 +40,21 @@ class MergeTest < Test::Unit::TestCase
     assert_equal expected, SmartHashMerge.merge(lhs, rhs)
   end
 
+  should "not merge nil array values" do
+    lhs = { }
+    rhs = { "foo" => ["baz"] }
+    expected = { "foo" => ["baz"] }
+    assert_equal expected, SmartHashMerge.merge(lhs, rhs)
+  end
+
+  should "not change hash" do
+    lhs = { "foo" => {} }
+    rhs = { "foo" => { "bar" => ["baz"] } }
+    expected = { "foo" => {} }
+    SmartHashMerge.merge(lhs, rhs)
+    assert_equal expected, lhs
+  end
+
   context "readme examples" do
     readme = File.read(File.expand_path("../README.md", "__FILE__"))
     lines = readme.grep(/^    /)
@@ -59,14 +74,6 @@ class MergeTest < Test::Unit::TestCase
         assert_equal eval(expectation), eval(code)
       end
     end
-  end
-
-  should "not change hash" do
-    lhs = { "foo" => {} }
-    rhs = { "foo" => { "bar" => ["baz"] } }
-    expected = { "foo" => {} }
-    SmartHashMerge.merge(lhs, rhs)
-    assert_equal expected, lhs
   end
 
 end

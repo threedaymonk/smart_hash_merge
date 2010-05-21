@@ -21,7 +21,7 @@ private
         merged[key] = deep_merge(lhash[key], rhash[key])
       elsif lvalue.is_a?(Array) and rvalue.is_a?(Array)
         merged[key] = lvalue + rvalue
-      elsif rvalue.is_a?(Array)
+      elsif rvalue.is_a?(Array) && !lvalue.nil?
         merged[key] = [lvalue] + rvalue
       else
         merged[key] = rvalue
